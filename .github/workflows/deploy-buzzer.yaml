@@ -20,7 +20,8 @@ jobs:
       - name: Create config.js for buzzer (if not already present)
         working-directory: ./buzzer_game
         run: |
-          if [ ! -f "config.js" ]; then
+          if true; then
+
             echo "Generating config.js from secrets..."
             echo "window.APP_CONFIG = {" > config.js
             echo "  API_KEY: \"${{ secrets.MULTISYNQ_API_KEY }}\"," >> config.js
