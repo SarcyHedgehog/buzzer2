@@ -1,72 +1,110 @@
-# Buzzer: Multiplayer True/False Game
+# 🟢 Buzzer
 
-A minimal multiplayer quiz-style game built with [Multisynq](https://multisynq.io) and Vibe Coding principles. Players join a shared room to answer true/false questions in real time, with scores tracked and displayed.
+A simple Progressive Web App (PWA) multiplayer buzzer  powered by [Multisynq](https://multisynq.io), designed for AI-assisted Vibe Coding experiments.
 
-## 🚀 Features
+## 🚀 Overview
 
-- Join or host a multiplayer room
-- Synced player presence
-- True/False button interface
-- Scoreboard and host controls
-- Built using [Multisynq](https://multisynq.io), a decentralized, serverless multiplayer framework
-- No server needed — fully browser-native
+This game allows players to join a lobby via a 5-letter room code and interact using a green ✅ or red ❌ buzzer. It supports session hosting, live player counts, scores, and a host-controlled round system.
 
-## 🧠 Controls & Gameplay
+## 🎮 Features
 
-- Use the green ✅ and red ❌ buttons to answer each question
-- The host controls when questions start and end
-- Points are awarded for correct answers; the scoreboard updates live
+- Multiplayer buzzer game with instant feedback
+- Host-led round start/stop and scoreboard
+- Scoring logic with win/loss buttons
+- ReactTogether/Multisynq backend (no servers!)
+- Works as a PWA (can be installed on desktop/mobile)
+- Responsive UI using Tailwind CSS
 
-## 📦 Files
+## 🧪 Local Development
 
-- `index.html` — main UI and game logic
-- `config.js` — runtime configuration (API key & App ID)
-- `config.example.js` — template for creating your own `config.js`
-- `sw.js` — service worker (for PWA support)
-- `manifest.json` — PWA metadata
+### 1. Clone the repository
 
-## 📲 Progressive Web App (PWA)
+```bash
+git clone https://github.com/SarcyHedgehog/buzzer2.git
+cd buzzer2
+```
 
-This app is PWA-enabled, which means:
+### 2. Create your local `config.js`
 
-- You can install it on your device (desktop or mobile)
-- It supports offline startup via the cached `index.html`
-- Includes a `manifest.json` and basic `sw.js` for service worker behavior
-
-To install:
-
-1. Open the app in Chrome or Edge
-2. Click the install icon in the address bar
-3. Launch from your home screen or app list
-
-## 🔐 Configuration
-
-Before running the app, create a `config.js` file with the following content:
+> This file must not be committed — it should remain local and listed in `.gitignore`.
 
 ```js
+// config.js - DO NOT COMMIT THIS FILE!
 window.APP_CONFIG = {
-  API_KEY: "your-multisynq-api-key",
-  APP_ID: "com.yourdomain.buzzer"
+  API_KEY: "your-local-api-key",
+  APP_ID: "com.sarcastichedgehog.buzzer",
+  BASE_URL: "http://localhost:8000"
 };
 ```
 
-See `config.example.js` for a sample.
+### 3. Start a local server
 
-## 🛰 Deployment
+```bash
+python -m http.server
+```
 
-This app is designed to run from any static web host (GitHub Pages, Netlify, etc). No build step required.
+Visit `http://localhost:8000`.
 
-A GitHub Actions workflow is included in `.github/workflows/deploy.yaml` to automatically publish this app to [sarcastichedgehog.com/buzzer](https://sarcastichedgehog.com/buzzer). If you'd like to adapt it:
+---
 
-- Ensure secrets `MULTISYNQ_API_KEY`, `MULTISYNQ_APP_ID`, and `GH_PAGES_DEPLOY_TOKEN` are set
-- Adjust the `TARGET_DIR` if deploying to a different subfolder
+## 🔧 Deployment to Website (GitHub Actions)
 
-> Note: You don’t need to use the workflow if running locally or deploying elsewhere. Just ensure `config.js` is present.
+### Required GitHub Secrets
 
-## 💡 Contributing
+Ensure your repo contains the following secrets:
 
-Fork the repo, modify the interface, enhance the logic, or replace the questions. All Vibe Coding enhancements welcome!
+- `MULTISYNQ_API_KEY`
+- `MULTISYNQ_APP_ID`
+- `MULTISYNQ_BASE_URL` (e.g., `https://www.sarcastichedgehog.com/buzzer`)
 
-## 📜 License
+### Deployment YAML snippet
 
-MIT. Created by [Sarcastic Hedgehog](https://sarcastichedgehog.com).
+```yaml
+- name: Create config.js for buzzer
+  working-directory: ./buzzer_game
+  run: |
+    echo "Generating config.js from secrets..."
+    echo "window.APP_CONFIG = {" > config.js
+    echo "  API_KEY: \"${{ secrets.MULTISYNQ_API_KEY }}\"," >> config.js
+    echo "  APP_ID: \"${{ secrets.MULTISYNQ_APP_ID }}\"," >> config.js
+    echo "  BASE_URL: \"${{ secrets.MULTISYNQ_BASE_URL }}\"" >> config.js
+    echo "};" >> config.js
+```
+
+This generates `config.js` dynamically at deploy time, keeping secrets safe.
+
+> ⚠️ Always regenerate `config.js` on deployment — do **not** skip it based on file existence.
+
+---
+
+## 📲 Progressive Web App
+
+This app is installable as a PWA:
+
+- Add to Home Screen (Android/iOS)
+- Installable as a standalone app on desktop
+- Supports offline caching and startup banners
+
+No additional configuration needed beyond `manifest.json` and `sw.js`.
+
+---
+
+## 🧠 Powered By
+
+- [Multisynq](https://multisynq.io)
+- Vanilla JS / HTML / Tailwind CSS
+- GitHub Actions for deployment
+- <a href="https://www.sarcastichedgehog.com" target="_blank">
+    <img src="https://www.sarcastichedgehog.com/images/hedgehog_logo.png" alt="Sarcastic Hedgehog" width="20" height="20" style="vertical-align: middle;"/> Sarcastic Hedgehog
+  </a>
+---
+
+## 📸 Screenshot
+
+![Screenshot](https://www.sarcastichedgehog.com/images/buzzer.png)
+
+---
+
+## 🧩 License
+
+MIT
