@@ -25,6 +25,8 @@ jobs:
             echo "window.APP_CONFIG = {" > config.js
             echo "  API_KEY: \"${{ secrets.MULTISYNQ_API_KEY }}\"," >> config.js
             echo "  APP_ID: \"${{ secrets.MULTISYNQ_APP_ID }}\"" >> config.js
+            echo "  BASE_URL: \"${{ secrets.MULTISYNQ_BASE_URL }}\"" >> config.js
+
             echo "};" >> config.js
           else
             echo "config.js already exists, skipping overwrite."
